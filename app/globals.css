@@ -164,12 +164,12 @@
 
 }
 .hero-image{
-  transform:rotateX(15deg) scale(1);
+  transform:rotateX(25deg) scale(1);
   transition: transform 0.5s ease-out;
   will-change: transform;
 }
 
 .hero-image.scrolled{
-  transform:rotateX(0deg) scale(1) translateY(40px);
+  transform:rotateX(-5deg) scale(1) translateY(40px);
 
 }

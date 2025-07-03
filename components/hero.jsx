@@ -33,11 +33,11 @@ const HeroSection = () => {
 
 
   return (
-    <section className='w-full pt-36 md:pt-48 pb-10'>
+    <section className='w-full pt-36 md:pt-30 pb-10'>
         <div className='space-y-6 text-center'>
 
-            <div className='space-y-6 mx-auto'>
-                <h1 className='text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title'>
+            <div className='space-y-6  mx-auto'>
+                <h1 className='mx-auto text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title'>
                     Your Personal AI Coach for
                     <br>
                     </br>
@@ -64,11 +64,11 @@ const HeroSection = () => {
             </div>
             
             <div className='hero-image-wrapper mt-5 md:mt-0'>
-                <div ref={imageRef} className='hero-image flex justify-center items-center'>
+                <div ref={imageRef} className='hero-image flex justify-center items-center md-mx-auto my-auto'>
                     <Image
                     src={"/image.png"}
-                    width={1280}
-                    height={320}
+                    width={880}
+                    height={220}
                     alt="AI Coach"
                     className='border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-secondary-foreground  md:mx-auto my-auto' 
                     
