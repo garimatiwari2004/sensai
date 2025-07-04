@@ -25,8 +25,11 @@ import {
  
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { checkUser } from "@/lib/checkUser";
+// import { checkUser } from "@/lib/checkUser";
 
-const Header = () => {
+const Header =async() => {
+  await checkUser();
   return (
     <header className=" w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 flex items-center justify-between">
@@ -49,7 +52,7 @@ const Header = () => {
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Button>
                   <StarsIcon className=" h-4 w-4" />
                   <LayoutDashboard className=" h-4 w-4" />
@@ -102,7 +105,7 @@ const Header = () => {
                   userButtonUsername: "hidden",
                 },
               }}
-              afterSignOutUrl="/"
+              redirectUrl="/onboarding"
             />
           </SignedIn>
         </div>
