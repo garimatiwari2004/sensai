@@ -1,9 +1,10 @@
 "use server";
 
 import { DemandLevel } from "@/lib/generated/prisma";
-import { auth } from "@clerk/nextjs/dist/types/server";
+import { db } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
-export async function getUser(data) {
+export async function updateUser(data) {
     const {userId}=await auth();
     if(!userId){
         throw new Error("User not authenticated"); 
@@ -56,7 +57,7 @@ export async function getUser(data) {
                 },
               });
               return {updatedUser, industryInsights};
-            
+            },
             {
                 timeout: 10000, // 10 seconds timeout
             }
@@ -66,5 +67,38 @@ export async function getUser(data) {
     }catch(error){
         console.error("Error fetching user:", error.message);
         throw new Error("Failed to fetch user data"); 
+    }
+}
+export async function getOnboardingStatus(data) {
+    const {userId}=await auth();
+    if(!userId){
+        throw new Error("User not authenticated"); 
+    }
+
+    const user = await db.user.findUnique({
+        where: {
+            clerkUserId: userId,
+        },
+    });
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    try {
+        const user=await db.user.findUnique({
+            where:{
+                clerkUserId: userId,
+            },
+            select:{
+                industry:true,
+            }
+        });
+        return{
+            isOnboarded:!!user?.industry,
+        };
+    } catch (error) {
+        console.error("Error checking onboarding status:", error.message);
+        throw new Error("Failed to check onboarding status");
+        
     }
 }
