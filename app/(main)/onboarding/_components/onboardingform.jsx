@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,11 +21,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import useFetch from "@/hooks/use-fetch";
+import { updateUser } from "@/actions/user";
 
 const OnboardingForm = ({ industries }) => {
   const [selectedIndustry, setSelectedIndustry] = useState(null);
   const router = useRouter();
-
+  const {
+    loading: updateLoading,
+    fn: updateUserFn,
+    data: updateResult,
+  } = useFetch(updateUser);
   const {
     register,
     handleSubmit,
@@ -36,7 +44,23 @@ const OnboardingForm = ({ industries }) => {
   } = useForm({
     resolver: zodResolver(onboardingSchema),
   });
- const watchIndustry = watch("industry");
+
+  const onSubmit = async (values) => {
+    try {
+      const formattedIndustry = `${values.industry}-${values.subIndustry
+        .toLowerCase()
+        .replace(/ /g, "-")}`;
+      await updateUserFn({
+        ...values,
+        industry: formattedIndustry,
+      });
+    } catch (error) {
+      console.error("Onboarding error:",error);
+    }
+  };
+
+  
+  const watchIndustry = watch("industry");
   return (
     <div className="flex items-center justify-center bg-background">
       <Card className=" w-full max-w-lg mt-10 mb-20">
@@ -50,7 +74,7 @@ const OnboardingForm = ({ industries }) => {
           <CardAction>Card Action</CardAction>
         </CardHeader>
         <CardContent>
-          <form >
+          <form className="space-y-4" onSubmit={handleSubmit()}>
             <div className="space-y-2">
               <Label htmlFor="industry">Industry</Label>
               <Select
@@ -82,32 +106,92 @@ const OnboardingForm = ({ industries }) => {
               )}
             </div>
 
-           { <div className="space-y-2">
-              <Label htmlFor="subIndustry">Sub-Industry</Label>
-              <Select
-                onValueChange={(value) => {
-                  setValue("subIndustry", value);
-                }}
-              >
-                <SelectTrigger className="w-full" id="subIndustry">
-                  <SelectValue placeholder="Select Your Sub-Industry" />
-                </SelectTrigger>
-                <SelectContent>
-                  {selectedIndustry?.subindustries.map((sub) => {
-                    return (
-                      <SelectItem value={sub} key={sub}>
-                        {sub}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-              {errors.subIndustry && (
+            {watchIndustry && (
+              <div className="space-y-2">
+                <Label htmlFor="subIndustry">Sub-Industry</Label>
+                <Select
+                  onValueChange={(value) => {
+                    setValue("subIndustry", value);
+                  }}
+                >
+                  <SelectTrigger className="w-full" id="subIndustry">
+                    <SelectValue placeholder="Select Your Sub-Industry" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectedIndustry?.subindustries.map((sub) => {
+                      return (
+                        <SelectItem value={sub} key={sub}>
+                          {sub}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                {errors.subIndustry && (
+                  <p className="text-red-500 text-sm">
+                    {errors.subIndustry.message}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="experience">Years Of experience</Label>
+
+              <Input
+                id="experience"
+                type="number"
+                min="0"
+                max="50"
+                placeholder="Enter your years of experience"
+                {...register("experience")}
+              ></Input>
+
+              {errors.experience && (
                 <p className="text-red-500 text-sm">
-                  {errors.subIndustry.message}
+                  {errors.experience.message}
                 </p>
               )}
-            </div>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="skills">Your Skills</Label>
+
+              <Input
+                id="skills"
+                placeholder="Python, JavaScript, React.."
+                {...register("skills")}
+              ></Input>
+              <p className="text-sm text-muted-foreground">
+                Separate multiple skills with a comma
+              </p>
+
+              {errors.experience && (
+                <p className="text-red-500 text-sm">
+                  {errors.experience.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bio">Professional Bio</Label>
+
+              <Textarea
+                id="bio"
+                placeholder="Write a brief professional bio"
+                {...register("bio")}
+              />
+
+              {errors.bio && (
+                <p className="text-red-500 text-sm">{errors.bio.message}</p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 hover:cursor-pointer "
+            >
+              Complete Profile
+            </Button>
           </form>
         </CardContent>
       </Card>

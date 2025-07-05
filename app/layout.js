@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
         {/* header */}
         <Header/>
         <main className="min-h-screen">{children}</main>
+        <Toaster richColors />
         <footer className="bg-muted/50 py-5">
           <div className="container mx-auto text-center text-gray-200">
             <p>Made with ❤️ by Garima</p>
