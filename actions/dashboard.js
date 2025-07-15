@@ -7,7 +7,7 @@ import { GoogleGenerativeAI, GoogleGenerativeAIAbortError } from "@google/genera
 
 const genAI=new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model=genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     
 });
 
@@ -21,10 +21,10 @@ export const generateAIInsights=async(industry)=>{
             ],
             "growthRate": number,
             "demandLevel": "High" | "Medium" | "Low",
-            "topSkills": ["skill1", "skill2"],
+            "TopSkills": ["skill1", "skill2"],
             "marketOutlook": "Positive" | "Neutral" | "Negative",
             "keyTrends": ["trend1", "trend2"],
-            "recommendedSkills": ["skill1", "skill2"]
+            "recomendedSkills": ["skill1", "skill2"]
           }
           
           IMPORTANT: Return ONLY the JSON. No additional text, notes, or markdown formatting.
@@ -46,10 +46,9 @@ export const generateAIInsights=async(industry)=>{
 try {
   return JSON.parse(cleanedText);
 } catch (err) {
-  console.error("❌ Failed to parse AI response:", cleanedText);
-  throw new Error("AI response is not valid JSON");
-}
-
+    console.error("[Gemini Error]:", err.message);
+    throw new Error("AI model temporarily unavailable. Please try again in a few moments.");
+  }
 
 
 };
@@ -64,6 +63,9 @@ export async function getIndustryInsight() {
            where: {
                clerkUserId: userId,
            },
+           include:{
+            industryInsight:true,
+           }
        });
        if (!user) {
            throw new Error("User not found");
