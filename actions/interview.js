@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 const genAI=new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -57,8 +58,8 @@ export async function generateQuiz(){
 
     return quiz.questions;
 }catch(error){
-    console.error("Error generating Quix: ". error);
-    throw new Error("Failed to generate quiz");
+  console.error("Error generating Quix: ", error);
+  throw new Error("Failed to generate quiz");
 
 }
 

@@ -3,7 +3,7 @@ import { getOnboardingStatus } from '@/actions/user';
 import { redirect } from 'next/navigation';
 import React from 'react'
 import DashboardView from './_components/dashboardview';
-import Layout from './_components/layout';
+import Layout from './layout';
 
 const IndustrInsightsPage =async () => {
   const {isOnboarded} = await getOnboardingStatus();
