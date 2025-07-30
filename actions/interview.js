@@ -34,8 +34,8 @@ export async function generateQuiz(){
   }.
     
     Each question should be multiple choice with 4 options.
-    
-    Return the response in this JSON format only, no additional text:
+    DO NOT add code formatting
+    ONLY return valid JSON, no additional text:
     {
       "questions": [
         {
@@ -88,6 +88,7 @@ export async function saveQuizResult(questions,answers,score)
     }));
 
     const wrongAnswers=questionResults.filter((q)=>!q.isCorrect);
+    let improvementTip = "";
     if(wrongAnswers.length>0){
         const wrongQuestionsText=wrongAnswers.map(
             (q)=>
@@ -116,7 +117,7 @@ export async function saveQuizResult(questions,answers,score)
     }
     }
     try {
-        const assessment=await db.assessment.create({
+        const assessment=await db.assessments.create({
             data:{
                 userId:user.id,
                 quizScore:score,
