@@ -136,3 +136,37 @@ export async function saveQuizResult(questions,answers,score)
     }
     
 }
+
+
+export async function getAssessments(){
+    const {userId}=await auth();
+        if(!userId){
+            throw new Error("User not authenticated"); 
+        }
+    
+        const user = await db.user.findUnique({
+            where: {
+                clerkUserId: userId,
+            },
+        });
+
+        if (!user) throw new Error("User Not Found");
+        try {
+          const assessments = await db.assessments.findMany({
+            where: {
+              userId: user.id,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+          return assessments;
+          
+        } catch (error) {
+          console.error("Error fetching assessments: ", error);
+          throw new Error("Failed to fetch assessments");
+          
+        }
+
+
+}

@@ -176,7 +176,7 @@ const Quiz = () => {
           <Button
              onClick={()=>setShowExplanation(true)}
              variant="outline"
-             disables={!answers[currentQuestion]}>
+             disabled={!answers[currentQuestion]}>
 
              Show Explanation
              </Button>

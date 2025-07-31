@@ -66,6 +66,10 @@ const DashboardView = ({ insights }) => {
 
   return (
     <div className="space-y-6">
+      <div className='flex items-center justify-between mb-5'>
+        <h1 className='text-6xl font-bold gradient-title '> INDUSTRY INSIGHTS </h1>
+      </div>
+      
       <div className="flex justify-between items-center">
         <Badge variant="outline">Last Updated: {lastUpdateDate}</Badge>
       </div>
