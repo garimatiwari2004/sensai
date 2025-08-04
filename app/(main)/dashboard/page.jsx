@@ -7,11 +7,13 @@ import Layout from './layout';
 
 const IndustrInsightsPage =async () => {
   const {isOnboarded} = await getOnboardingStatus();
-  const insights= await getIndustryInsight();
+  
   
   if(!isOnboarded){
     redirect('/onboarding');
   }
+
+  const insights= await getIndustryInsight();
   return (
     <Layout>
     <div className='container mx-auto'>

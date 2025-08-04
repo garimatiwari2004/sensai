@@ -5,15 +5,15 @@ import { auth } from "@clerk/nextjs/server";
 import { DemandLevel } from "@/lib/generated/prisma";
 import { GoogleGenerativeAI, GoogleGenerativeAIAbortError } from "@google/generative-ai";
 
-const genAI=new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model=genAI.getGenerativeModel({
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash",
-    
+
 });
 
-export const generateAIInsights=async(industry)=>{
-    const prompt=
-    `
+export const generateAIInsights = async (industry) => {
+    const prompt =
+        `
     Analyze the current state of the ${industry} industry and provide insights in ONLY the following JSON format without any additional notes or explanations:
           {
             "salaryRange": [
@@ -37,57 +37,58 @@ export const generateAIInsights=async(industry)=>{
     
     `;
 
-    const result=await model.generateContent(prompt);
-    const response=result.response;
-    const text=response.text();
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
     const cleanedText = text.replace(/```json\s*([\s\S]*?)```/, "$1").trim();
 
-try {
-  return JSON.parse(cleanedText);
-} catch (err) {
-    console.error("[Gemini Error]:", err.message);
-    throw new Error("AI model temporarily unavailable. Please try again in a few moments.");
-  }
+    try {
+        return JSON.parse(cleanedText);
+    } catch (err) {
+        console.error("[Gemini Error]:", err.message);
+        throw new Error("AI model temporarily unavailable. Please try again in a few moments.");
+    }
 
 
 };
 
 export async function getIndustryInsight() {
-      const {userId}=await auth();
-       if(!userId){
-           throw new Error("User not authenticated"); 
-       }
-   
-       const user = await db.user.findUnique({
-           where: {
-               clerkUserId: userId,
-           },
-           include:{
-            industryInsight:true,
-           }
-       });
-       if (!user) {
-           throw new Error("User not found");
-       }
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("User not authenticated");
+    }
 
-        if(!user.industryInsight){
-            const insights=await generateAIInsights(user.industry);
-
-
-            const industryInsight=await db.industryInsight.create({
-                data:{
-                    industry: user.industry,
-                    ...insights,
-                    nextUpdate: new Date(Date.now() +  7* 24 * 60 * 60 * 1000), 
-                }
-            });
-            return industryInsight;
-
-               
-        } 
-        return user.industryInsight;
-
-
+    const user = await db.user.findUnique({
+        where: {
+            clerkUserId: userId,
+        },
+        include: {
+            industryInsight: true,
+        },
+    });
+    if (!user) {
+        throw new Error("User not found");
+    }
     
+
+    if (!user.industryInsight) {
+        const insights = await generateAIInsights(user.industry);
+
+
+        const industryInsight = await db.industryInsight.create({
+            data: {
+                industry: user.industry,
+                ...insights,
+                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            },
+        });
+        return industryInsight;
+
+
+    }
+    return user.industryInsight;
+
+
+
 }
