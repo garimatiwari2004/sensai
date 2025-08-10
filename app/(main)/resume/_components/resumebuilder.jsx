@@ -10,8 +10,6 @@ const ResumeBuilder = () => {
     const [activeTab, setActiveTab] = useState("edit");
 
 
-    useForm()
-
 
 
   return (
