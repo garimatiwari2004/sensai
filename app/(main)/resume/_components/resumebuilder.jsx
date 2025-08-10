@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
 import { Download, Save } from "lucide-react";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+
 
 const ResumeBuilder = () => {
     const [activeTab, setActiveTab] = useState("edit");
