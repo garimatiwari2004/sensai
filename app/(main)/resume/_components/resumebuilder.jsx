@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { Button } from "@/components/ui/button";
 import { Download, Save } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 
 const ResumeBuilder = () => {
