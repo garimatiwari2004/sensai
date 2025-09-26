@@ -13,6 +13,7 @@ import {
   FileText,
   GraduationCap,
   LayoutDashboard,
+  Lock,
   PenBox,
   StarsIcon,
 } from "lucide-react";
@@ -72,7 +73,7 @@ const Header =async() => {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <PenBox className="h-4 w-4" />
-                  <Link href={"/cover"} className="flex items-center space-x-2">
+                  <Link href={"/ai-cover-letter"} className="flex items-center space-x-2">
                     <span>Cover Letter</span>
                   </Link>
                 </DropdownMenuItem>
@@ -83,6 +84,24 @@ const Header =async() => {
                     className="flex items-center space-x-2"
                   >
                     <span>Interview Prep</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Lock className="h-4 w-4" />
+                  <Link
+                    href={"/roadmap"}
+                    className="flex items-center space-x-2"
+                  >
+                    <span>Roadmap</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Lock className="h-4 w-4" />
+                  <Link
+                    href={"/roadmap"}
+                    className="flex items-center space-x-2"
+                  >
+                    <span>Task planner</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
