@@ -98,7 +98,7 @@ const Header =async() => {
                 <DropdownMenuItem>
                   <Lock className="h-4 w-4" />
                   <Link
-                    href={"/roadmap"}
+                    href={"/taskPlanner"}
                     className="flex items-center space-x-2"
                   >
                     <span>Task planner</span>
