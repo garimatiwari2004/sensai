@@ -55,7 +55,7 @@ const HeroSection = () => {
                         Get Started
                     </Button>
                 </Link>
-                <Link href="/">
+                <Link href="#target" scroll={true}>
                     <Button size="lg" className="px-8" variant="outline">
                         Learn More
                     </Button>
