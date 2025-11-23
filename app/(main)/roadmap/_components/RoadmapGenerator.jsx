@@ -2,7 +2,7 @@
 
 
 import React, { useState } from "react";
-import ReactFlow, { Background, Controls, MiniMap } from "react-flow-renderer";
+import ReactFlow, { Background, Controls, MiniMap } from "reactflow";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
